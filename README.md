@@ -55,17 +55,19 @@ TradeUP/
 ### 1. Banco de dados
 
 ```bash
-createdb tradeup
-psql -d tradeup -f database/schema.sql
-psql -d tradeup -f database/seed.sql
+sudo -u postgres dropdb tradeup # caso já exista uma db com mesmo nome
+sudo -u postgres createdb tradeup
+sudo -u postgres psql -d tradeup -f database/schema.sql
+sudo -u postgres psql -d tradeup -f database/seed.sql
 ```
 
 ### 2. Back-end
 
 ```bash
 cd backend
-cp .env.example .env      # ajuste DATABASE_URL e JWT_SECRET
+cp .env.example .env      # ajuste DATABASE* e JWT_SECRET
 npm install
+npm run seed-estados-cidades
 npm run dev               # http://localhost:3333
 ```
 

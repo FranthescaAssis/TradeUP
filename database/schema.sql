@@ -3,13 +3,30 @@
 -- Baseado no Diagrama Entidade-Relacionamento do projeto
 -- ============================================================
 
--- Tipos enumerados
+-- ------------------------------------------------------------
+-- TIPOS ENUMERADOS
+-- ------------------------------------------------------------
 CREATE TYPE tipo_habilidade_usuario AS ENUM ('oferece', 'procura');
 CREATE TYPE tipo_publicacao AS ENUM ('oferta', 'necessidade');
 CREATE TYPE modalidade_publicacao AS ENUM ('online', 'presencial', 'ambos');
 CREATE TYPE status_publicacao AS ENUM ('ativa', 'concluida', 'cancelada');
 CREATE TYPE status_proposta AS ENUM ('pendente', 'aceita', 'recusada', 'cancelada', 'concluida');
 CREATE TYPE status_denuncia AS ENUM ('pendente', 'analisada', 'indeferida', 'procedente');
+
+-- ------------------------------------------------------------
+-- ESTADO/CIDADE
+-- ------------------------------------------------------------
+CREATE TABLE estado (
+    id    INTEGER PRIMARY KEY,      -- ID do IBGE
+    sigla VARCHAR(2) UNIQUE NOT NULL,
+    nome  VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE cidade (
+    id        INTEGER PRIMARY KEY,  -- ID do IBGE
+    nome      VARCHAR(100) NOT NULL,
+    estado_id INTEGER NOT NULL REFERENCES estado(id)
+);
 
 -- ------------------------------------------------------------
 -- USUARIO
@@ -21,7 +38,7 @@ CREATE TABLE usuario (
     senha          VARCHAR(255) NOT NULL,             -- armazenada com hash (bcrypt) - RNF-004
     foto           VARCHAR(255),
     descricao      TEXT,
-    localizacao    VARCHAR(100),
+    cidade_id      INTEGER NOT NULL REFERENCES cidade(id),
     data_cadastro  TIMESTAMP NOT NULL DEFAULT NOW(),
     status         SMALLINT NOT NULL DEFAULT 1        -- 1 = ativo, 0 = bloqueado/inativo (RN-001)
 );
@@ -115,7 +132,11 @@ CREATE TABLE denuncia (
     data_denuncia   TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+-- ------------------------------------------------------------
+-- INDEX
+-- ------------------------------------------------------------
 -- Índices de apoio às consultas mais frequentes (Explorar / Minhas trocas / Chat)
+CREATE INDEX idx_cidade_estado          ON cidade (estado_id);
 CREATE INDEX idx_publicacao_status_data ON publicacao (status, data_criacao DESC);
 CREATE INDEX idx_publicacao_categoria   ON publicacao (categoria);
 CREATE INDEX idx_proposta_usuario       ON proposta (id_usuario);
