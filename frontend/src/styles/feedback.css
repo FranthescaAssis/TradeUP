@@ -1,0 +1,280 @@
+/* Estilos novos desta etapa: mensagens, erros de formulário, carregamento.
+   Usa as mesmas variáveis e a mesma identidade do style.css; não altera as telas existentes. */
+
+:root {
+  --fb-error: #d63a3a;
+  --fb-error-bg: #fdecec;
+  --fb-success: #1f7a5c;
+  --fb-success-bg: #e6f5ef;
+  --fb-info-bg: #eeeafd;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- aviso flutuante */
+.fb-region {
+  position: fixed;
+  top: 84px;
+  left: 50%;
+  z-index: 1000;
+  display: flex;
+  width: min(560px, calc(100vw - 32px));
+  transform: translateX(-50%);
+  justify-content: center;
+  pointer-events: none;
+}
+
+.fb-toast {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 12px 32px -12px rgba(45, 27, 105, 0.35);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  pointer-events: auto;
+  animation: fb-in 180ms ease-out;
+}
+
+.fb-toast-text {
+  flex: 1;
+}
+
+.fb-toast-close {
+  padding: 0 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.fb-toast-close:hover {
+  opacity: 1;
+}
+
+.fb-success {
+  border-color: #b9e2d3;
+  background: var(--fb-success-bg);
+  color: var(--fb-success);
+}
+
+.fb-error {
+  border-color: #f3b9b9;
+  background: var(--fb-error-bg);
+  color: #a52a2a;
+}
+
+.fb-info {
+  border-color: #d3cbf7;
+  background: var(--fb-info-bg);
+  color: #2d1b69;
+}
+
+@keyframes fb-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fb-toast {
+    animation: none;
+  }
+}
+
+/* ---- faixa de mensagem dentro de formulários */
+.form-alert {
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.form-alert-error {
+  border-color: #f3b9b9;
+  background: var(--fb-error-bg);
+  color: #a52a2a;
+}
+
+.form-alert-success {
+  border-color: #b9e2d3;
+  background: var(--fb-success-bg);
+  color: var(--fb-success);
+}
+
+.form-alert-info {
+  border-color: #d3cbf7;
+  background: var(--fb-info-bg);
+  color: #2d1b69;
+}
+
+/* ---- erro por campo */
+.field-error {
+  margin: 0;
+  color: #b42323;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.field-hint {
+  margin: 0;
+  color: #6b657a;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.login-field input[aria-invalid="true"],
+.signup-field input[aria-invalid="true"],
+.forgot-form input[aria-invalid="true"] {
+  border-color: var(--fb-error);
+}
+
+.login-field input[aria-invalid="true"]:focus,
+.signup-field input[aria-invalid="true"]:focus {
+  box-shadow:
+    0 0 0 3px rgba(214, 58, 58, 0.16),
+    0 2px 8px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---- botão em carregamento */
+.is-loading {
+  cursor: progress !important;
+  opacity: 0.85;
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: fb-spin 700ms linear infinite;
+}
+
+@keyframes fb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-spinner {
+    animation-duration: 1800ms;
+  }
+}
+
+/* ---- ajuste de largura só nas telas de acesso (evita rolagem horizontal em celular) */
+.login-card,
+.signup-card,
+.forgot-card,
+.reset-card {
+  max-width: 100%;
+}
+
+@media (max-width: 820px) {
+  .login-page,
+  .signup-page,
+  .forgotpassword-page,
+  .reset-page {
+    padding: 24px 16px;
+  }
+
+  .login-card,
+  .signup-card {
+    width: 100%;
+    min-height: 0;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+/* ---- tela de sessão / 404 */
+.session-screen {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--canvas, #fcfaf6);
+  color: var(--ink, #2d1b69);
+  text-align: center;
+}
+
+.session-screen h1 {
+  margin: 0;
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+}
+
+.session-screen p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted, #7c768a);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.session-screen .login-brand {
+  width: 220px;
+  height: 80px;
+}
+
+.session-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #dedaf3;
+  border-top-color: var(--violet, #6c5ce7);
+  border-radius: 50%;
+  animation: fb-spin 800ms linear infinite;
+}
+
+.session-button {
+  min-height: 48px;
+  padding: 0 28px;
+  border-radius: 12px;
+  background: var(--violet, #6c5ce7);
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.session-button:hover {
+  background: #5c4bd7;
+}
+
+/* ---- aviso na recuperação de senha */
+.forgot-notice {
+  margin: 16px 0 0;
+  text-align: left;
+}
