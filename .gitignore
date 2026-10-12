@@ -1,6 +1,22 @@
+# ---- Segredos e configuração local (NUNCA vão para o GitHub)
+.env
+.env.*
+!.env.example
+
+# ---- Node / front-end
 node_modules/
 dist/
-.env
-.env.local
+
+# ---- Python / back-end
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# ---- Editor / sistema / logs
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db
 *.log
