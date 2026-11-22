@@ -55,10 +55,11 @@ As tabelas `mensagem`, `avaliacao` e `denuncia` já existem no banco, preparadas
 ## 5. Estrutura de pastas
 
 ```text
-TradeUP-teste/
+TradeUP/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py            # inicia a API, CORS e formato dos erros
+│   │   ├── hospedagem.py      # entrada de produção: serve o site e a API (em /api)
 │   │   ├── config.py          # lê o .env
 │   │   ├── banco.py           # conexão com o PostgreSQL
 │   │   ├── seguranca.py       # hash de senha (bcrypt) e token (JWT)
@@ -87,6 +88,9 @@ TradeUP-teste/
 │   ├── package.json           # dependências e comandos do frontend
 │   ├── vite.config.js
 │   └── .env.example           # modelo do arquivo .env
+├── .dockerignore
+├── Dockerfile                 # imagem usada na hospedagem (Render)
+├── render.yaml                # Blueprint do Render (serviço e banco)
 ├── docs/                      # documento de especificação (PDF)
 └── README.md
 ```
@@ -104,7 +108,7 @@ Os arquivos `.env` (privados) e as pastas geradas (`node_modules`, `.venv`, `dis
 
 Faça uma única vez.
 
-**7.1 Abrir o projeto.** No VS Code, use **Arquivo → Abrir Pasta** e escolha a pasta `TradeUP-teste`. Abra um terminal em **Terminal → Novo Terminal** (PowerShell).
+**7.1 Abrir o projeto.** No VS Code, use **Arquivo → Abrir Pasta** e escolha a pasta `TradeUP`. Abra um terminal em **Terminal → Novo Terminal** (PowerShell).
 
 **7.2 Criar o banco.** No pgAdmin:
 
@@ -197,7 +201,7 @@ Cuidados:
 ## 10. Roteiro rápido de teste manual
 
 1. Sem login, abra `/dashboard`: deve redirecionar para o login.
-2. Crie duas contas (uma em janela anônima), por exemplo Ana e Bruno.
+2. Crie duas contas (uma em janela anônima), por exemplo Ana e Bruno. Após cada cadastro, o onboarding pede as habilidades oferecidas e os interesses: use **Continuar** nas duas etapas ou **Pular por agora** na primeira. Depois abre o painel.
 3. Ana cria uma publicação. Bruno a encontra em Explorar e envia uma proposta.
 4. Ana aceita a proposta em **Minhas trocas → Recebidas** e depois clica em **Concluir troca**.
 5. Em **Minhas publicações**, Ana cria outra publicação e a cancela.
@@ -216,12 +220,14 @@ Cuidados:
 
 ## 11. Hospedagem para a banca (Render)
 
+O Render publica a partir da branch `hospedagem/render`. Novos commits enviados a essa branch disparam um deploy automático.
+
 O `render.yaml` cria um serviço web e um banco PostgreSQL no plano gratuito. O serviço serve o site e a API no mesmo endereço, com a API em `/api`. O Render configura a conexão interna e gera a chave JWT. Na primeira inicialização de um banco vazio, o serviço aplica `database/schema.sql`.
 
-1. Envie os arquivos desta configuração para a branch do GitHub que deseja apresentar, por exemplo, `main`.
+1. Os arquivos desta configuração estão na branch `hospedagem/render`.
 2. No [painel do Render](https://dashboard.render.com/), escolha **New → Blueprint**, conecte o GitHub e selecione o repositório TradeUP.
-3. Selecione a branch que contém o `render.yaml` e confirme a criação dos dois recursos no plano **Free**.
+3. Selecione a branch `hospedagem/render` e confirme a criação dos dois recursos no plano **Free**.
 4. Aguarde o deploy. Abra a URL do serviço web e confira `/healthz`, que deve retornar `{"status":"ok"}`. Repita o [roteiro de teste manual](#10-roteiro-rápido-de-teste-manual) com duas contas de demonstração.
-5. Compartilhe a URL principal do serviço com a banca. Novos commits enviados à branch conectada disparam outro deploy.
+5. Compartilhe a URL principal do serviço com a banca.
 
 O banco PostgreSQL gratuito expira 30 dias após a criação. O serviço web adormece após 15 minutos sem tráfego e pode levar cerca de um minuto para abrir novamente. Abra e teste o link no dia da apresentação. Consulte os [limites do plano gratuito](https://render.com/docs/free).
