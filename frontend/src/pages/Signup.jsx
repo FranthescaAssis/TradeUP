@@ -133,7 +133,7 @@ export default function Signup({ navigate }) {
         [CAMPO_API.password]: values.password,
         [CAMPO_API.confirmation]: values.confirmation,
       });
-      // O redirecionamento para o painel é feito por App.jsx assim que a sessão passa a existir.
+      // O redirecionamento para o onboarding é feito por App.jsx assim que a sessão passa a existir.
       notify("success", `Conta criada com sucesso! Bem-vindo(a) ao TradeUp, ${user.primeiroNome}.`);
     } catch (erro) {
       // Erros por campo vindos do back-end (ex.: e-mail já cadastrado) aparecem junto do campo.

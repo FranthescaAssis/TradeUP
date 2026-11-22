@@ -61,10 +61,11 @@ export function AuthProvider({ children }) {
     return () => setUnauthorizedHandler(() => {});
   }, [notify]);
 
-  const iniciarSessao = useCallback((resposta) => {
+  // novoCadastro: a conta acabou de ser criada, então App.jsx leva ao onboarding em vez do painel.
+  const iniciarSessao = useCallback((resposta, novoCadastro = false) => {
     tokenStore.set(resposta.access_token);
     const user = prepararUsuario(resposta.usuario);
-    setState({ status: "authenticated", user });
+    setState({ status: "authenticated", user, novoCadastro });
     return user;
   }, []);
 
@@ -72,7 +73,7 @@ export function AuthProvider({ children }) {
     return iniciarSessao(await authApi.login({ email: email.trim(), senha: password }));
   }, [iniciarSessao]);
 
-  const register = useCallback(async (dados) => iniciarSessao(await authApi.register(dados)), [iniciarSessao]);
+  const register = useCallback(async (dados) => iniciarSessao(await authApi.register(dados), true), [iniciarSessao]);
 
   // Sair: apaga o token do navegador. Sem token, as páginas privadas deixam de abrir.
   const logout = useCallback(() => {

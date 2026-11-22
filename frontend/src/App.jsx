@@ -113,10 +113,11 @@ export default function App() {
       const next = auth.motivo === "logout" ? "" : `?next=${encodeURIComponent(path + search)}`;
       navigate(`/login${next}`, { replace: true });
     } else if (auth.status === "authenticated" && GUEST_ONLY_PATHS.has(path)) {
-      navigate(readNext(search) ?? "/dashboard", { replace: true });
+      // Conta recém-criada segue para o onboarding (habilidades → interesses); login vai ao painel.
+      navigate(auth.novoCadastro ? "/onboarding/step01" : readNext(search) ?? "/dashboard", { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.status, auth.motivo, path, search]);
+  }, [auth.status, auth.motivo, auth.novoCadastro, path, search]);
 
   // Se a API recusar, o erro sobe para o formulário (NewPost), que o mostra e mantém o texto digitado.
   async function handleCreatePost(dados) {
