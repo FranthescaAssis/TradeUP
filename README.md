@@ -1,5 +1,7 @@
 # TradeUP
 
+[Acessar o TradeUP online](https://tradeup-kdf4.onrender.com)
+
 Plataforma de troca de habilidades e conhecimentos entre pessoas (Projeto Integrador – UniEVANGÉLICA).
 
 ## 1. Sobre o TradeUP
@@ -217,17 +219,3 @@ Cuidados:
 | Frontend abriu em outra porta | Libere a porta 5173 ou ajuste `CORS_ORIGINS` em `backend/.env` para o endereço mostrado pelo Vite e reinicie o backend. |
 | Cidades não carregam | Confirme que o backend está rodando. |
 | API mostra 404 em `/` ou `/favicon.ico` | Esses caminhos não existem. Use `/health` para conferir a API. |
-
-## 11. Hospedagem para a banca (Render)
-
-O Render publica a partir da branch `hospedagem/render`. Novos commits enviados a essa branch disparam um deploy automático.
-
-O `render.yaml` cria um serviço web e um banco PostgreSQL no plano gratuito. O serviço serve o site e a API no mesmo endereço, com a API em `/api`. O Render configura a conexão interna e gera a chave JWT. Na primeira inicialização de um banco vazio, o serviço aplica `database/schema.sql`.
-
-1. Os arquivos desta configuração estão na branch `hospedagem/render`.
-2. No [painel do Render](https://dashboard.render.com/), escolha **New → Blueprint**, conecte o GitHub e selecione o repositório TradeUP.
-3. Selecione a branch `hospedagem/render` e confirme a criação dos dois recursos no plano **Free**.
-4. Aguarde o deploy. Abra a URL do serviço web e confira `/healthz`, que deve retornar `{"status":"ok"}`. Repita o [roteiro de teste manual](#10-roteiro-rápido-de-teste-manual) com duas contas de demonstração.
-5. Compartilhe a URL principal do serviço com a banca.
-
-O banco PostgreSQL gratuito expira 30 dias após a criação. O serviço web adormece após 15 minutos sem tráfego e pode levar cerca de um minuto para abrir novamente. Abra e teste o link no dia da apresentação. Consulte os [limites do plano gratuito](https://render.com/docs/free).
