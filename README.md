@@ -1,5 +1,9 @@
 # TradeUP
 
+[Acessar o TradeUP online](https://tradeup-kdf4.onrender.com)
+
+A configuração de hospedagem no Render está na branch [`hospedagem/render`](https://github.com/FranthescaAssis/TradeUP/tree/hospedagem/render).
+
 Plataforma de troca de habilidades e conhecimentos entre pessoas (Projeto Integrador – UniEVANGÉLICA).
 
 ## 1. Sobre o TradeUP
@@ -28,6 +32,7 @@ Como funciona:
 Estas funcionalidades estão integradas ao backend e ao PostgreSQL:
 
 - **Cadastro e login**, com escolha de estado e cidade (lista local de municípios do IBGE, conferida pelo backend).
+- **Onboarding**: o cadastro inclui a escolha de habilidades e interesses, que são salvos no perfil.
 - **Autenticação e proteção de rotas**: páginas privadas exigem login; sessão vencida leva de volta ao login; sair da conta apaga o token.
 - **Publicações**: criar ofertas e solicitações e listá-las nas telas Início e Explorar.
 - **Busca e filtros** na tela Explorar.
@@ -48,14 +53,14 @@ As telas abaixo existem como **referência visual** e usam dados de exemplo. Ela
 - **Denúncias**.
 - **Detalhes da troca, proposta recebida, perfil público de outras pessoas e "propor troca" a partir do perfil**: telas de demonstração, fora do fluxo real (o fluxo real é Explorar → Proposta → Minhas trocas).
 - **Foto de perfil** (a tela de edição mostra o campo, mas não o salva). As habilidades ("O que você oferece" e "O que você procura") já são salvas no banco e aparecem no seu perfil.
-- **Configurações** (troca de e-mail e senha, privacidade, notificações, exclusão de conta), **recuperação e redefinição de senha** e as telas de **onboarding**: apenas telas, sem efeito.
+- **Configurações** (troca de e-mail e senha, privacidade, notificações, exclusão de conta) e **recuperação e redefinição de senha**: apenas telas, sem efeito.
 
 As tabelas `mensagem`, `avaliacao` e `denuncia` já existem no banco, preparadas para essas etapas (`habilidade` e `usuario_habilidade` já estão em uso).
 
 ## 5. Estrutura de pastas
 
 ```text
-TradeUP-teste/
+TradeUP/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py            # inicia a API, CORS e formato dos erros
@@ -104,7 +109,7 @@ Os arquivos `.env` (privados) e as pastas geradas (`node_modules`, `.venv`, `dis
 
 Faça uma única vez.
 
-**7.1 Abrir o projeto.** No VS Code, use **Arquivo → Abrir Pasta** e escolha a pasta `TradeUP-teste`. Abra um terminal em **Terminal → Novo Terminal** (PowerShell).
+**7.1 Abrir o projeto.** No VS Code, use **Arquivo → Abrir Pasta** e escolha a pasta `TradeUP`. Abra um terminal em **Terminal → Novo Terminal** (PowerShell).
 
 **7.2 Criar o banco.** No pgAdmin:
 
@@ -197,7 +202,7 @@ Cuidados:
 ## 10. Roteiro rápido de teste manual
 
 1. Sem login, abra `/dashboard`: deve redirecionar para o login.
-2. Crie duas contas (uma em janela anônima), por exemplo Ana e Bruno.
+2. Crie duas contas (uma em janela anônima), por exemplo Ana e Bruno. Após cada cadastro, o onboarding pede as habilidades oferecidas e os interesses: use **Continuar** nas duas etapas ou **Pular por agora** na primeira. Depois abre o painel.
 3. Ana cria uma publicação. Bruno a encontra em Explorar e envia uma proposta.
 4. Ana aceita a proposta em **Minhas trocas → Recebidas** e depois clica em **Concluir troca**.
 5. Em **Minhas publicações**, Ana cria outra publicação e a cancela.
